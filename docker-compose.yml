@@ -1,0 +1,38 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto-broker
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  backend:
+    build: ./backend
+    container_name: iot-backend
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_MONGODB_URI: "mongodb://host.docker.internal:27017/iot_platform"
+      MQTT_BROKER_URL: "tcp://mosquitto:1883"
+    depends_on:
+      - mosquitto
+
+  simulator:
+    build: ./simulator
+    container_name: iot-simulator
+    environment:
+      MQTT_BROKER_URL: "mqtt://mosquitto:1883"
+    depends_on:
+      - mosquitto
+
+  frontend:
+    build: ./frontend
+    container_name: iot-frontend
+    ports:
+      - "8090:80"
+    depends_on:
+      - backend

@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+simulator/node_modules/
+frontend/node_modules/
+
+# Java / Maven build output
+backend/target/
+
+# Leftover unused Mongo data (native Mongo is the real DB, not this)
+mongo-data/
+
+# Environment-specific / secrets (none yet, but good practice going forward)
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+mosquitto/log/*
+mosquitto/data/*
