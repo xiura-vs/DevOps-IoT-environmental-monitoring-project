@@ -1,14 +1,11 @@
 services:
   mosquitto:
-    image: eclipse-mosquitto
+    build: ./mosquitto
     container_name: mosquitto-broker
-    ports:
-      - "1883:1883"
-      - "9001:9001"
+    ports: ["1883:1883", "9001:9001"]
     volumes:
-      - ./mosquitto/config:/mosquitto/config
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
 
   backend:
     build: ./backend
@@ -36,3 +33,6 @@ services:
       - "8090:80"
     depends_on:
       - backend
+volumes:
+  mosquitto_data:
+  mosquitto_log:
